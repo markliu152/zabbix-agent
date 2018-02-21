@@ -16,6 +16,6 @@ template '/etc/zabbix/zabbix_agentd.conf' do
   mode '0644'
 end
 
-service 'zabbix-proxy' do
+service 'zabbix-agent' do
   action [:enable, :start]
 end
