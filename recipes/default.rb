@@ -7,15 +7,15 @@
 include_recipe 'zabbix1::release'
 include_recipe 'zabbix1::firewall'
 
-package 'zabbix-agent'do
+package 'zabbix-agent'
+service 'zabbix-agent' do
+  action [:enable, :start]
+end
 
 template '/etc/zabbix/zabbix_agentd.conf' do
   source 'agent.erb'
   owner 'root'
   group 'root'
   mode '0644'
-end
-
-service 'zabbix-agent' do
-  action [:enable, :start]
+  notifies :restart "service[zabbix-agent]", :immediately
 end
