@@ -8,14 +8,16 @@ include_recipe 'zabbix1::release'
 include_recipe 'zabbix1::firewall'
 
 package 'zabbix-agent'
-service 'zabbix-agent' do
-  action [:enable, :start]
-end
 
 template '/etc/zabbix/zabbix_agentd.conf' do
   source 'agent.erb'
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :restart "service[zabbix-agent]", :immediately
+  notifies :restart, 'service:[zabbix-agent]'
+end
+
+service 'zabbix-agent' do
+  supports restart: true, status: true, reload: true
+  action [:enable, :start]
 end
